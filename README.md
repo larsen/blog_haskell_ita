@@ -1,5 +1,7 @@
 # blog.haskell-ita.it
 
+IMPORTANT: this project is up to date aborted. I only shared temporary the repo, in case someoneof the community want continue.
+
 This is the Hakyll source code, and related content of [blog.haskell-ita.it](http://blog.haskell-ita.it).
 
 ## How to Update the Website
