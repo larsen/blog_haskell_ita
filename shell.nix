@@ -16,7 +16,7 @@ let
         executableHaskellDepends = [
           base binary blaze-html containers filepath hakyll old-locale time
         ];
-        license = stdenv.lib.licenses.unfree;
+        license = stdenv.lib.licenses.bsd2;
       };
 
   haskellPackages = if compiler == "default"
