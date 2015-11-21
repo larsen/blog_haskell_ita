@@ -41,15 +41,9 @@ Execute
 
 for a live preview of the website. In case of change of files, the preview is updated.
 
-### Adding info in Front Page
-
-Add a content into `frontpage/` in the same format of other posts. Add proper tags.
-
-Move into `posts/` when it is not a news anymore.
-
 ### Adding a Post
 
-Add posts inside `posts/` directory. If they are related to community events, put them inside `posts/community` directory.
+Add posts inside `posts/` directory, in the proper subdirector, playing the role of category.
 
 Use already defined posts as example. Hakyll uses Pandoc that is very powerful and many different type of files are accepted.
 
@@ -111,30 +105,51 @@ Il sito deve fare da:
 * wiki/knowledge-base
 
 TODO mettere i CONTACTS con tutti gli altri siti che formano la community
-TODO mettere la mission
 TODO salvo in un branch a parte di haskell-ita dato che fa parte effettivamente di un sito diverso
 
 ### Initial Release
+
+TODO se impicciolisco la finestra, il bottone di bootstrap non lavora correttamente 
+
+TODO usare un formato grafice dei link migliore: azzurro o qualcosa del genere/standard
+
+TODO togliere sezione su INFRASTRUCTURE dato che bastano i links ai siti
+
+TODO essere sicuri di usare il nero per il blog
+
+TODO i sottotitoli nei blog devono avere dimensioni minori dei titoli del blog
+
+TODO aggiungere siti in basso social appropiati e anche altri indicatori
+
+TODO aggiungere in basso che e\` stato costrito con Hakyll
+
+TODO includere link al repository con il sito
+
+TODO usare classe bootstrap appropiata per le immagini
+
+TODO aggiungere link anche nel titolo del post
+
+TODO rimuovere immagine a SX
+
+TODO spostare contenuto blog a SX
+
+TODO test haskell-ita piccolo
+
+TODO aggiungere logo
+
+TODO attivare CSS nei posts del blog
 
 TODO remove dynamic libraries when it is all correct
 
 TODO prima sistemo la struttura poi la grafica/template
 
-TODO la HOME-PAGE visualizza prima la FRONT-PAGE posts e poi tutto il resto
-
 TODO se scelgo un TAG:
 * mostro il TAG scelto usando un colore diverso, in stile TAB
 * mostro solo i post del TAG senza la FRONT-PAGE
-
-TODO creo pagina ABOUT con:
-* mission
-* contatti
-
-TODO mettere MISSION nella parte ABOUT
 
 TODO nel footer descrivere chi siamo
 
 TODO provare a fare subscribe ai FEEDS quando ho installato 
 
-TODO use a beautiful template like http://gfxmonk.net/tags/application/
+TODO chiedere se puo` diventare la pagina standard di Haskell invece che il blog
 

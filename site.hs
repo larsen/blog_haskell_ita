@@ -27,21 +27,15 @@ import            Hakyll
 
 --------------------------------------------------------------------------------
 main :: IO ()
-main = hakyll $ do
+main = do
+  hakyll $ do
 
+    categories <- buildCategories blogPattern (fromCapture "*/index.html")
     tags <- buildTags blogPattern (fromCapture "*/index.html")
-    pages <- buildPages Nothing blogPattern
-
-    match "favicon.ico" $ do
-        route   idRoute
-        compile copyFileCompiler
-
+    pages      <- buildPages Nothing blogPattern
+    
     -- static content
-    match "*.css" $ do
-        route   idRoute
-        compile compressCssCompiler
-
-    match ("*.png" .||. "*.txt" .||. "assets/**") $ do
+    match ("*.png" .||. "*.txt" .||. "images/**" .||. "*.ico" .||. "css/**" .||. "js/**") $ do
          route   idRoute
          compile copyFileCompiler
 
@@ -50,43 +44,47 @@ main = hakyll $ do
          route blogRoute
          compile $ pandocCompiler
             >>= saveSnapshot blogSnapshot
-            >>= loadAndApplyTemplate "templates/blog.html"    (blogDetailCtx tags)
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
+            >>= loadAndApplyTemplate "templates/blog.html"    (blogDetailCtx categories tags)
+            >>= loadAndApplyTemplate "templates/default.html" (defaultCtx categories tags)
 
     -- index
     match "index.html" $ do
          route idRoute
          compile $ do
             getResourceBody
-               >>= applyAsTemplate (pageCtx 1 pages tags)
-               >>= loadAndApplyTemplate "templates/default.html" indexCtx 
+               >>= applyAsTemplate (pageCtx 1 pages categories tags)
+               >>= loadAndApplyTemplate "templates/default.html" (indexCtx categories tags) 
+
+    -- static pages
+    match "*.md" $ do
+       route pageRoute
+       compile $ pandocCompiler
+          >>= loadAndApplyTemplate "templates/default.html" (defaultCtx categories tags)
 
     -- pages
     paginateRules pages $ \i _ -> do
          route idRoute
          compile $ makeItem (show i)
-            >>= loadAndApplyTemplate "templates/blog-list.html" (pageCtx i pages tags)
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
+            >>= loadAndApplyTemplate "templates/blog-list.html" (pageCtx i pages categories tags)
+            >>= loadAndApplyTemplate "templates/default.html" (defaultCtx categories tags)
 
     -- category index
-    tagsRules tags $ \category pattern -> do
+    tagsRules categories $ \category pattern -> do
          catPages <- buildPages (Just category) pattern
          route idRoute
          compile $ do
             makeItem category
-               >>= loadAndApplyTemplate "templates/blog-list.html" (pageCtx 1 pages tags)
-               >>= loadAndApplyTemplate "templates/default.html" indexCtx
+               >>= loadAndApplyTemplate "templates/blog-list.html" (pageCtx 1 catPages categories tags)
+               >>= loadAndApplyTemplate "templates/default.html" (indexCtx categories tags)
 
          -- category pages
          paginateRules catPages $ \i _ -> do
             route idRoute
             compile $ do
                makeItem category
-                  >>= loadAndApplyTemplate "templates/blog-list.html" (pageCtx i catPages tags)
-                  >>= loadAndApplyTemplate "templates/default.html" defaultContext
+                  >>= loadAndApplyTemplate "templates/blog-list.html" (pageCtx i catPages categories tags)
+                  >>= loadAndApplyTemplate "templates/default.html" (defaultCtx categories tags)
 
-    -- TODO add front-page section into rss
-    
     -- rss
     create ["rss/index.html"] $ do
          route idRoute
@@ -99,12 +97,6 @@ main = hakyll $ do
 -- CONFIGURATION
 --------------------------------------------------------------------------------
 
--- | The setting used for generating posts.
-postCtx :: Context String
-postCtx =
-    dateField "date" "%Y-%m-%d" `mappend`
-    defaultContext
-
 -- | The settings used for generating Atom Feeds.
 myFeedConfiguration :: FeedConfiguration
 myFeedConfiguration = FeedConfiguration
@@ -115,9 +107,6 @@ myFeedConfiguration = FeedConfiguration
     , feedRoot        = "http://www.haskell-ita.it"
     }
 
-frontPagePattern :: Pattern
-frontPagePattern = "frontpage/**"
-
 blogPattern :: Pattern
 blogPattern = "posts/**"
 
@@ -125,7 +114,7 @@ blogSnapshot :: Snapshot
 blogSnapshot = "blog-content"
 
 blogPerPage :: Int
-blogPerPage = 4
+blogPerPage = 10
 
 blogOrder :: (MonadMetadata m, Functor m) => [Item a] -> m [Item a]
 blogOrder = recentFirst
@@ -134,33 +123,42 @@ blogOrder = recentFirst
 -- CONTEXTS
 --------------------------------------------------------------------------------
 
-indexCtx :: Context String
-indexCtx = 
+indexCtx :: Tags -> Tags -> Context String
+indexCtx categories tags = 
    prettyTitleField "title" <> 
    bodyField        "body"  <>
    metadataField            <>
    urlField         "url"   <>
    pathField        "path"  <>
-   missingField
+   missingField <>
+   defaultCtx categories tags
 
-pageCtx :: PageNumber -> Paginate -> Tags -> Context String
-pageCtx i pages tags = 
-      blogListField "posts" (loadBlogs pattern)      <>
-      field "tags" (const . renderTagList' $ tags)              <>
+-- | Add categories and tags to the context.
+defaultCtx :: Tags -> Tags -> Context String
+defaultCtx categories tags = 
+      field "categoriesEntries" (const . renderTagList'' $ categories)  <>
+      field "tagsEntries" (const . renderTagList'' $ tags) <>
+      defaultContext
+
+pageCtx :: PageNumber -> Paginate -> Tags -> Tags -> Context String
+pageCtx i pages categories tags = 
+      blogListField "blogs" categories (loadBlogs pattern)      <>
+      field "categories" (const . renderTagList' $ categories)  <>
       constField "title" "Pagination"                           <>
       paginateContext' pages i                                  <>
-      defaultContext
+      defaultCtx categories tags
   where
       pattern = fromList . fromMaybe [] . M.lookup i . paginateMap $ pages
       paginateContext' pages i = mapContextP (isSuffixOf "Url") dropFileName (paginateContext pages i)
-      blogListField name loader = listField name (blogDetailCtx tags) loader
+      blogListField name categories loader = listField name (blogDetailCtx categories tags) loader
 
-blogDetailCtx :: Tags -> Context String
-blogDetailCtx tags = 
+blogDetailCtx :: Tags -> Tags -> Context String
+blogDetailCtx categories tags = 
       dateField "date" "%B %e, %Y"              <>
       mapContext dropFileName (urlField "url")  <>
+      categoryField' "category" categories      <>
       teaserField "teaser" blogSnapshot         <>
-      defaultContext
+      defaultCtx categories tags
   
 rssCtx :: Context String
 rssCtx = 
@@ -185,8 +183,6 @@ blogRoute =
       dateRoute metadata = customRoute $ \id' -> joinPath [dateFolder id' metadata, toFilePath id']
       dateFolder id' = maybe mempty (formatTime defaultTimeLocale "%Y/%m") . tryParseDate id'
       dropDateRoute = gsubRoute "[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2}-" (const mempty)
-
--- TODO capire cosa fa questo!!
 
 pageRoute :: Routes
 pageRoute = removeExtension `composeRoutes` addIndex
@@ -245,6 +241,14 @@ renderTagList' = renderTags makeLink (intercalate " ")
    where
       makeLink tag url count _ _ = renderHtml $
          H.a ! A.href (toValue . dropFileName $ url) $ toHtml (tag ++ " (" ++ show count ++ ")")
+
+-- | Create an HTML list.
+renderTagList'' :: Tags -> Compiler String 
+renderTagList'' = renderTags makeLink (intercalate " ")
+   where
+      makeLink tag url count _ _ = renderHtml $
+         H.li $ H.a ! A.href (toValue . dropFileName $ url) $ toHtml tag
+
 
 renderBlogRss :: [Item String] -> Compiler (Item String)
 renderBlogRss = renderRss myFeedConfiguration rssCtx
