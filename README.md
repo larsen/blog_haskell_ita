@@ -1,9 +1,5 @@
 # blog.haskell-ita.it
 
-IMPORTANT: this project is up to date aborted. I only shared temporary the repo, in case someoneof the community want continue.
-
-This is the Hakyll source code, and related content of [blog.haskell-ita.it](http://blog.haskell-ita.it).
-
 ## How to Update the Website
 
 ### Initial Setup
@@ -46,15 +42,6 @@ for a live preview of the website. In case of change of files, the preview is up
 Add posts inside `posts/` directory, in the proper subdirector, playing the role of category.
 
 Use already defined posts as example. Hakyll uses Pandoc that is very powerful and many different type of files are accepted.
-
-Use these tags preferibly:
-
-* coding
-* community
-* events
-* projects
-* tools
-* knoweledge-base
 
 #### Teaser
 
@@ -152,4 +139,12 @@ TODO nel footer descrivere chi siamo
 TODO provare a fare subscribe ai FEEDS quando ho installato 
 
 TODO chiedere se puo` diventare la pagina standard di Haskell invece che il blog
+
+## Automatic Update of the WebSite
+
+TODO create a web-hook on GitHub
+
+TODO the web server receive the hook, make git pull of the repo, and then make a site build
+
+TODO daily the web server execute also a site clean and regeneration, in order to manage the big changes in the structure of the code of the site
 
