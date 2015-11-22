@@ -2,7 +2,7 @@
   width:auto;
 }
 
-.navbar-nav>li>a::first-letter {
+.nav-tabs>li>a::first-letter {
     text-transform:uppercase;
 }
 
@@ -16,7 +16,6 @@ footer {
   padding-bottom:40px;
   background-color:#ededed;
 }
-
 
 #masthead {
   min-height:199px;

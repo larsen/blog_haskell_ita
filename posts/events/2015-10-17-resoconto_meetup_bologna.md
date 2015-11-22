@@ -5,7 +5,7 @@ tags: meetups
 ---
 Ci siamo trovati a Bologna, Sabato 17 Ottobre, presso [T3Lab](http://www.t3lab.it), e sponsorizzati da [BioDec](http://www.biodec.com/).
 
-![](/images/photos/meetup_2015_autunno.jpg)
+<img src="/images/photos/meetup_2015_autunno.jpg" alt="photo" class="img-thumbnail">
 
 <!--more-->
 

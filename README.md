@@ -55,6 +55,14 @@ In case of Literate Haskell Code use instead
 
 for bypassing the byrding style `>` character.
 
+#### Images
+
+Use something like
+
+    <img src="/images/photos/meetup_2015_estate.jpg" alt="photo" class="img-thumbnail">
+
+on the first column of a Markdown file. Pandoc will insert directly the HTML code. The class is used from Bootstrap CSS template for scaling and decorating the image.
+
 ### Website Update
 
 Execute
@@ -83,24 +91,35 @@ If you miss the tag `date`, Hakyll generates a not clear error message like:
 
 ## Project Roadmap (TODO)
 
-### Full Site Design
-
-Il sito deve fare da:
-
-* home page
-* blog
-* wiki/knowledge-base
-
-TODO mettere i CONTACTS con tutti gli altri siti che formano la community
-TODO salvo in un branch a parte di haskell-ita dato che fa parte effettivamente di un sito diverso
-
 ### Initial Release
 
-TODO se impicciolisco la finestra, il bottone di bootstrap non lavora correttamente 
+TODO mettere i CONTACTS con tutti gli altri siti che formano la community
 
-TODO usare un formato grafice dei link migliore: azzurro o qualcosa del genere/standard
+TODO pensare se mettere in alto la dicitura Haskell-ITA
 
-TODO togliere sezione su INFRASTRUCTURE dato che bastano i links ai siti
+TODO usare una retinatura nella NAV-BAR in alto
+
+TODO togliere gap top iniziale
+
+TODO fare delle file eleganti di bottoni nel footer
+
+TODO rendere fisso il menu in alto
+
+TODO migliorare impaginazione testo:
+* colori
+* interlinea
+* dimensioni corpo
+* colore link
+
+TODO vedere anche il bottone MORE che compare in fondo alle pagine
+
+TODO non carica piu\` alcuni fonts, e si blocca nel caricamento, vedere il motivo
+
+TODO usare un font migliore per il LOGO
+
+TODO ridurre spazio nel header sopra dedicato al titolo, basta molto più piccolo
+
+TODO vedere se il browser segnala degli errori
 
 TODO essere sicuri di usare il nero per il blog
 
@@ -112,33 +131,21 @@ TODO aggiungere in basso che e\` stato costrito con Hakyll
 
 TODO includere link al repository con il sito
 
-TODO usare classe bootstrap appropiata per le immagini
+TODO il titolo del blog deve essere un link
 
-TODO aggiungere link anche nel titolo del post
-
-TODO rimuovere immagine a SX
-
-TODO spostare contenuto blog a SX
+TODO sistemare paginazione in basso
 
 TODO test haskell-ita piccolo
 
 TODO aggiungere logo
-
-TODO attivare CSS nei posts del blog
-
-TODO remove dynamic libraries when it is all correct
-
-TODO prima sistemo la struttura poi la grafica/template
-
-TODO se scelgo un TAG:
-* mostro il TAG scelto usando un colore diverso, in stile TAB
-* mostro solo i post del TAG senza la FRONT-PAGE
 
 TODO nel footer descrivere chi siamo
 
 TODO provare a fare subscribe ai FEEDS quando ho installato 
 
 TODO chiedere se puo` diventare la pagina standard di Haskell invece che il blog
+
+TODO aggiungere DISQUS o simile ai post
 
 ## Automatic Update of the WebSite
 

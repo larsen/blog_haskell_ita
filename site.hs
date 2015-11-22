@@ -22,8 +22,28 @@ import qualified  Data.Set                         as S
 import qualified  Data.Map                         as M
 import qualified  Text.Blaze.Html5                 as H
 import qualified  Text.Blaze.Html5.Attributes      as A
-import            System.FilePath                  
+import            System.FilePath
 import            Hakyll
+
+{-
+
+HOWTOS
+======
+
+Change the top menu
+-------------------
+
+Change the function `renderTagListForTopMenu` 
+
+Change Post Formatting
+----------------------
+
+Change all files in templates directory. Same format is repeated for:
+* blog-list
+* blog post
+* page
+
+-}
 
 --------------------------------------------------------------------------------
 main :: IO ()
@@ -45,28 +65,28 @@ main = do
          compile $ pandocCompiler
             >>= saveSnapshot blogSnapshot
             >>= loadAndApplyTemplate "templates/blog.html"    (blogDetailCtx categories tags)
-            >>= loadAndApplyTemplate "templates/default.html" (defaultCtx categories tags)
+            >>= loadAndApplyTemplate "templates/default.html" (defaultCtx Nothing categories tags)
 
     -- index
     match "index.html" $ do
          route idRoute
          compile $ do
             getResourceBody
-               >>= applyAsTemplate (pageCtx 1 pages categories tags)
-               >>= loadAndApplyTemplate "templates/default.html" (indexCtx categories tags) 
+               >>= applyAsTemplate (pageCtx (Just "home") 1 pages categories tags)
+               >>= loadAndApplyTemplate "templates/default.html" (indexCtx (Just "home") categories tags) 
 
-    -- static pages
-    match "*.md" $ do
+    match "about.md" $ do
        route pageRoute
        compile $ pandocCompiler
-          >>= loadAndApplyTemplate "templates/default.html" (defaultCtx categories tags)
+          >>= loadAndApplyTemplate "templates/page.html" (defaultCtx (Just "about") categories tags)
+          >>= loadAndApplyTemplate "templates/default.html" (defaultCtx (Just "about") categories tags)
 
     -- pages
     paginateRules pages $ \i _ -> do
          route idRoute
          compile $ makeItem (show i)
-            >>= loadAndApplyTemplate "templates/blog-list.html" (pageCtx i pages categories tags)
-            >>= loadAndApplyTemplate "templates/default.html" (defaultCtx categories tags)
+            >>= loadAndApplyTemplate "templates/blog-list.html" (pageCtx Nothing i pages categories tags)
+            >>= loadAndApplyTemplate "templates/default.html" (defaultCtx Nothing categories tags)
 
     -- category index
     tagsRules categories $ \category pattern -> do
@@ -74,16 +94,16 @@ main = do
          route idRoute
          compile $ do
             makeItem category
-               >>= loadAndApplyTemplate "templates/blog-list.html" (pageCtx 1 catPages categories tags)
-               >>= loadAndApplyTemplate "templates/default.html" (indexCtx categories tags)
+               >>= loadAndApplyTemplate "templates/blog-list.html" (pageCtx (Just category) 1 catPages categories tags)
+               >>= loadAndApplyTemplate "templates/default.html" (indexCtx (Just category) categories tags)
 
          -- category pages
          paginateRules catPages $ \i _ -> do
             route idRoute
             compile $ do
                makeItem category
-                  >>= loadAndApplyTemplate "templates/blog-list.html" (pageCtx i catPages categories tags)
-                  >>= loadAndApplyTemplate "templates/default.html" (defaultCtx categories tags)
+                  >>= loadAndApplyTemplate "templates/blog-list.html" (pageCtx (Just category) i catPages categories tags)
+                  >>= loadAndApplyTemplate "templates/default.html" (defaultCtx (Just category) categories tags)
 
     -- rss
     create ["rss/index.html"] $ do
@@ -123,30 +143,31 @@ blogOrder = recentFirst
 -- CONTEXTS
 --------------------------------------------------------------------------------
 
-indexCtx :: Tags -> Tags -> Context String
-indexCtx categories tags = 
+indexCtx :: Maybe String -> Tags -> Tags -> Context String
+indexCtx activeSection categories tags = 
    prettyTitleField "title" <> 
    bodyField        "body"  <>
    metadataField            <>
    urlField         "url"   <>
    pathField        "path"  <>
    missingField <>
-   defaultCtx categories tags
+   defaultCtx activeSection categories tags
 
--- | Add categories and tags to the context.
-defaultCtx :: Tags -> Tags -> Context String
-defaultCtx categories tags = 
-      field "categoriesEntries" (const . renderTagList'' $ categories)  <>
-      field "tagsEntries" (const . renderTagList'' $ tags) <>
+-- | Add categories as top menu, and tags to the context.
+--   DEV-NOTE: I generated directly the "categoriesEntries" in the HTML format requested from the template. This is not elegant, but I was not able to generate a list of distinct high-level attributes to use in the template for formatting the produced HTML page. 
+defaultCtx :: Maybe String -> Tags -> Tags -> Context String
+defaultCtx activeSection categories tags = 
+      field "categoriesEntries" (const (renderTagListForTopMenu activeSection categories))  <>
+      field "tagsEntries" (const (renderTagListForTopMenu Nothing tags)) <>
       defaultContext
 
-pageCtx :: PageNumber -> Paginate -> Tags -> Tags -> Context String
-pageCtx i pages categories tags = 
+pageCtx :: Maybe String -> PageNumber -> Paginate -> Tags -> Tags -> Context String
+pageCtx activeSection i pages categories tags = 
       blogListField "blogs" categories (loadBlogs pattern)      <>
       field "categories" (const . renderTagList' $ categories)  <>
       constField "title" "Pagination"                           <>
       paginateContext' pages i                                  <>
-      defaultCtx categories tags
+      defaultCtx activeSection categories tags
   where
       pattern = fromList . fromMaybe [] . M.lookup i . paginateMap $ pages
       paginateContext' pages i = mapContextP (isSuffixOf "Url") dropFileName (paginateContext pages i)
@@ -154,11 +175,11 @@ pageCtx i pages categories tags =
 
 blogDetailCtx :: Tags -> Tags -> Context String
 blogDetailCtx categories tags = 
-      dateField "date" "%B %e, %Y"              <>
+      dateField "date" "%Y-%m-%d"               <>
       mapContext dropFileName (urlField "url")  <>
       categoryField' "category" categories      <>
       teaserField "teaser" blogSnapshot         <>
-      defaultCtx categories tags
+      defaultCtx Nothing categories tags
   
 rssCtx :: Context String
 rssCtx = 
@@ -194,6 +215,7 @@ pageRoute = removeExtension `composeRoutes` addIndex
 --------------------------------------------------------------------------------
 -- HELPERS
 --------------------------------------------------------------------------------
+
 -- contexts
 mapContextP :: (String -> Bool) -> (String -> String) -> Context a -> Context a
 mapContextP p f c'@(Context c) = Context $ \k a i -> 
@@ -233,8 +255,8 @@ buildPages mprefix pattern =
       (asIdentifier mprefix . show)
    where
       asIdentifier :: Maybe String -> String -> Identifier
-      asIdentifier Nothing    = fromCapture "*/index.html" 
-      asIdentifier (Just pre) = fromCapture . fromGlob $ pre <> "/*/index.html" 
+      asIdentifier Nothing    = fromCapture "*/index.html"
+      asIdentifier (Just pre) = fromCapture . fromGlob $ pre <> "/*/index.html"
 
 renderTagList' :: Tags -> Compiler String -- drops the filename from the link
 renderTagList' = renderTags makeLink (intercalate " ")
@@ -242,13 +264,28 @@ renderTagList' = renderTags makeLink (intercalate " ")
       makeLink tag url count _ _ = renderHtml $
          H.a ! A.href (toValue . dropFileName $ url) $ toHtml (tag ++ " (" ++ show count ++ ")")
 
--- | Create an HTML list.
-renderTagList'' :: Tags -> Compiler String 
-renderTagList'' = renderTags makeLink (intercalate " ")
-   where
-      makeLink tag url count _ _ = renderHtml $
-         H.li $ H.a ! A.href (toValue . dropFileName $ url) $ toHtml tag
+-- | Create an HTML list in the format specifically requested from the template.
+--   This function contains also all the definitions for the Top menu of the BLOG
+renderTagListForTopMenu :: Maybe String -> Tags -> Compiler String
+renderTagListForTopMenu activeSection tags = do
+     let s1 = makeLi "home" "/"
+     let s2 = makeLi "about" "/about/index.html"
+     s3 <- renderTags makeLink (intercalate " ") tags
+     return $ s1 ++ " " ++ s2 ++ " " ++ s3
 
+   where
+
+      makeLi :: String -> String -> String
+      makeLi tag url =
+       let isActive e
+               = if Just tag == activeSection
+                 then e ! A.class_ "active"
+                 else e
+
+           e1 = isActive (H.li ! H.customAttribute "role" "presentation") 
+       in renderHtml $ e1 $ H.a ! A.href (toValue url) $ toHtml tag
+
+      makeLink tag url _ _ _ = makeLi tag (dropFileName url)
 
 renderBlogRss :: [Item String] -> Compiler (Item String)
 renderBlogRss = renderRss myFeedConfiguration rssCtx
@@ -269,8 +306,6 @@ simpleRenderLink tag (Just filePath) =
 -- dates
 tryParseDate :: Identifier -> Metadata -> Maybe UTCTime
 tryParseDate = tryParseDateWithLocale defaultTimeLocale
-
--- TODO switch to ISO locale
 
 tryParseDateWithLocale :: TimeLocale -> Identifier -> Metadata -> Maybe UTCTime
 tryParseDateWithLocale locale id' metadata = do
