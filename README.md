@@ -117,14 +117,6 @@ TODO togliere gap top iniziale
 
 TODO rendere fisso il menu in alto
 
-TODO migliorare impaginazione testo:
-* colori
-* interlinea
-* dimensioni corpo
-* colore link
-
-TODO essere sicuri di usare il nero per il blog
-
 TODO non carica piu\` alcuni fonts, e si blocca nel caricamento, vedere il motivo
 
 TODO usare un font migliore per il LOGO
@@ -132,8 +124,6 @@ TODO usare un font migliore per il LOGO
 TODO ridurre spazio nel header sopra dedicato al titolo, basta molto più piccolo
 
 TODO vedere se il browser segnala degli errori
-
-TODO i sottotitoli nei blog devono avere dimensioni minori dei titoli del blog
 
 TODO test haskell-ita piccolo
 
