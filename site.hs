@@ -35,7 +35,7 @@ main = do
     pages      <- buildPages Nothing blogPattern
     
     -- static content
-    match ("*.png" .||. "*.txt" .||. "images/**" .||. "*.ico" .||. "css/**" .||. "js/**") $ do
+    match ("*.png" .||. "*.txt" .||. "images/**" .||. "*.ico" .||. "css/**" .||. "js/**" .||. "fonts/**") $ do
          route   idRoute
          compile copyFileCompiler
 

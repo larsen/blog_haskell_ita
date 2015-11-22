@@ -109,35 +109,19 @@ If you miss the tag `date`, Hakyll generates a not clear error message like:
 
 ### Initial Release
 
-TODO pensare se mettere in alto la dicitura Haskell-ITA
-
-TODO usare una retinatura nella NAV-BAR in alto
-
-TODO togliere gap top iniziale
-
-TODO rendere fisso il menu in alto
-
-TODO non carica piu\` alcuni fonts, e si blocca nel caricamento, vedere il motivo
-
-TODO usare un font migliore per il LOGO
-
-TODO ridurre spazio nel header sopra dedicato al titolo, basta molto più piccolo
-
-TODO vedere se il browser segnala degli errori
-
-TODO test haskell-ita piccolo
-
-TODO aggiungere logo
+TODO migliorare header, footer e layout in generale
 
 TODO provare a fare subscribe ai FEEDS quando ho installato 
 
-TODO chiedere se puo` diventare la pagina standard di Haskell invece che il blog
-
 TODO aggiungere DISQUS o simile ai post
 
-### Layout Improvements
+TODO aggiungere autore del post quando presente
 
-TODO il footer puo\` essere migliorato
+TODO chiedere se puo` diventare la pagina standard di Haskell invece che il blog:
+* cancello la knowldge-base su GitHub
+* metto su un branch a parte il sito vecchio
+* faccio puntare blog.haskell-ita.it a www.haskell-ita.it
+* sostituisco il sito attuale www.haskell-ita.it con questo
 
 ### Automatic Update of the WebSite
 
