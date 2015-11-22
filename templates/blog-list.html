@@ -21,37 +21,26 @@ $endif$
 </div>
 $endfor$
 
-                    <!-- Pagination -->
-                    <div class="pagination center">
-                        <ul>
-                            <li>
-$if(firstPageUrl)$
-                            <a href="$firstPageUrl$">First</a>
-$else$
-                            <a class="disable-link" href="#">First</a>
-$endif$
-                            </li>
-                            <li>
-$if(previousPageUrl)$
-                            <a href="$previousPageUrl$">Prev</a>
-$else$
-                            <a class="disable-link" href="#">Prev</a>
-$endif$
-                            </li>
-                            <li><a class="no-link" href="#">$currentPageNum$ of $numPages$</a></li>
-                            <li>
-$if(nextPageUrl)$
-                            <a href="$nextPageUrl$">Next</a>
-$else$
-                            <a class="disable-link" href="#">Next</a>
-$endif$
-                            </li>
-                            <li>
-$if(lastPageUrl)$
-                            <a href="$lastPageUrl$">Last</a>
-$else$
-                            <a class="disable-link" href="#">Last</a>
-$endif$
-                            </li>
-                        </ul>
-                    </div>
+<!-- Pagination -->
+<nav>
+  <ul class="pager">
+  $if(previousPageUrl)$
+    <li class="previous">
+      <a href="$previousPageUrl$">Previous</a>
+    </li>
+  $else$
+     <li class="previous disabled">
+      <a href="#">Previous</a>
+    </li>
+  $endif$
+  $if(nextPageUrl)$
+     <li class="next">
+      <a href="$nextPageUrl$">Next</a>
+    </li>
+  $else$
+      <li class="next disabled">
+      <a href="#">Next</a>
+    </li>
+  $endif$
+  </ul>
+</nav>

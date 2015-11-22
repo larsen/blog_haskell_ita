@@ -25,26 +25,6 @@ import qualified  Text.Blaze.Html5.Attributes      as A
 import            System.FilePath
 import            Hakyll
 
-{-
-
-HOWTOS
-======
-
-Change the top menu
--------------------
-
-Change the function `renderTagListForTopMenu` 
-
-Change Post Formatting
-----------------------
-
-Change all files in templates directory. Same format is repeated for:
-* blog-list
-* blog post
-* page
-
--}
-
 --------------------------------------------------------------------------------
 main :: IO ()
 main = do

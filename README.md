@@ -63,6 +63,22 @@ Use something like
 
 on the first column of a Markdown file. Pandoc will insert directly the HTML code. The class is used from Bootstrap CSS template for scaling and decorating the image.
 
+#### Change Top Menu
+
+Change the function `renderTagListForTopMenu` inside `site.hs` 
+
+#### Change Page Format
+
+Change all files in templates directory. Same format is repeated for:
+
+* blog-list
+* blog post
+* page
+
+#### Change "About" Page
+
+Change `about.md` file.
+
 ### Website Update
 
 Execute
@@ -92,6 +108,8 @@ If you miss the tag `date`, Hakyll generates a not clear error message like:
 ## Project Roadmap (TODO)
 
 ### Initial Release
+
+TODO ripetere i link ai contatti sia nel footer che nella pagina about
 
 TODO mettere i CONTACTS con tutti gli altri siti che formano la community
 
