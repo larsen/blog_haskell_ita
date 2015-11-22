@@ -109,17 +109,11 @@ If you miss the tag `date`, Hakyll generates a not clear error message like:
 
 ### Initial Release
 
-TODO ripetere i link ai contatti sia nel footer che nella pagina about
-
-TODO mettere i CONTACTS con tutti gli altri siti che formano la community
-
 TODO pensare se mettere in alto la dicitura Haskell-ITA
 
 TODO usare una retinatura nella NAV-BAR in alto
 
 TODO togliere gap top iniziale
-
-TODO fare delle file eleganti di bottoni nel footer
 
 TODO rendere fisso il menu in alto
 
@@ -129,7 +123,7 @@ TODO migliorare impaginazione testo:
 * dimensioni corpo
 * colore link
 
-TODO vedere anche il bottone MORE che compare in fondo alle pagine
+TODO essere sicuri di usare il nero per il blog
 
 TODO non carica piu\` alcuni fonts, e si blocca nel caricamento, vedere il motivo
 
@@ -139,25 +133,11 @@ TODO ridurre spazio nel header sopra dedicato al titolo, basta molto più piccol
 
 TODO vedere se il browser segnala degli errori
 
-TODO essere sicuri di usare il nero per il blog
-
 TODO i sottotitoli nei blog devono avere dimensioni minori dei titoli del blog
-
-TODO aggiungere siti in basso social appropiati e anche altri indicatori
-
-TODO aggiungere in basso che e\` stato costrito con Hakyll
-
-TODO includere link al repository con il sito
-
-TODO il titolo del blog deve essere un link
-
-TODO sistemare paginazione in basso
 
 TODO test haskell-ita piccolo
 
 TODO aggiungere logo
-
-TODO nel footer descrivere chi siamo
 
 TODO provare a fare subscribe ai FEEDS quando ho installato 
 
@@ -165,7 +145,11 @@ TODO chiedere se puo` diventare la pagina standard di Haskell invece che il blog
 
 TODO aggiungere DISQUS o simile ai post
 
-## Automatic Update of the WebSite
+### Layout Improvements
+
+TODO il footer puo\` essere migliorato
+
+### Automatic Update of the WebSite
 
 TODO create a web-hook on GitHub
 

@@ -10,6 +10,14 @@ Condividere la passione per il linguaggio di programmazione [Haskell](https://ww
 
 Mettere in contatto sia le persone più esperte del linguaggio, che chi sta iniziando a studiarlo e vuole capire i punti di forza della programmazione funzionale.
 
+Haskell-ITA è una community, e non una associazione. Quindi chiunque partecipi ai meetup, o sia attivo in almeno uno dei [siti web](#footer) è a tutti gli effetti un membro della community.
+
+## Contatti
+
+Per partecipare attivamente alla community accedi ad uno dei [siti web](#footer).
+
+Per comunicazioni ufficiali [info@haskell-ita.it](mailto:info@haskell-ita.it).
+
 ## www.haskell-ita.it
 
 Questo sito è generato da [Hakyll](https://jaspervdj.be/hakyll/) a partire dal contenuto del repository GitHub [Haskell-ITA/www_haskell-ITA_it_website](https://github.com/Haskell-ITA/www_haskell-ita_it_website) 
@@ -24,13 +32,11 @@ Nel caso di documenti con contenuto "work in progress", è possibile pubblicarli
 
 ## Blogroll
 
-Chi è autore di post relativi ad Haskell può comunicarlo e il post o un suo link può essere aggiunto anche al sito Haskell-ITA.
+Chi è autore di post relativi ad Haskell può comunicarlo e una copia del post o un suo link può essere aggiunto anche al sito Haskell-ITA.
 
 ## Membri della Community
 
-La community non ha nessuna forma di iscrizione formale o informale. Chiunque partecipi in mailing-list, chat, meetup, è a tutti gli effetti un membro della community.
-
-Per facilitare la collaborazione, ecco un elenco (non esaustivo, per i motivi detti sopra) di membri della community e di siti a loro collegati (nota: tutti sono invitati ad aggiungersi):
+Per facilitare la collaborazione, ecco un elenco non esaustivo di membri della community e di siti a loro collegati. NOTA: Chi vuole aggiungersi lo faccia direttamente modificando questa pagina da GitHub o lo chieda in mailing-list.
 
 * Massimo Zaniboni, [GitHub](https://github.com/massimo-zaniboni)
 
